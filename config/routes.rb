@@ -10,6 +10,7 @@ SampleApp::Application.routes.draw do
   get '/about' => 'pages#about'
   get '/help' => 'pages#help'
   get '/signup' => 'users#new'
+  get '/show' => 'users#show'
   root :to => 'pages#home'
 
   resources :users
