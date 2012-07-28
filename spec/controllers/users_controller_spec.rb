@@ -1,9 +1,10 @@
 require 'spec_helper'
-
+1
 describe UsersController do
+  render_views
 
   before :each do
-    @user = Factory(:user)
+    @user = FactoryGirl.create(:user)
   end
 
   describe "GET 'show'" do
@@ -22,7 +23,7 @@ describe UsersController do
 
     it "should have the right title" do
       get 'new'
-      response.should have_selector("title", :content => "Sign Up")
+      response.should have_selector("title", content:"Ruby on Rails Tutorial Sample App | Sign up")
     end
   end
 end
