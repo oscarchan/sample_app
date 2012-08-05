@@ -44,13 +44,13 @@ class User < ActiveRecord::Base
   end
 
   def make_salt
-    hash(SecureRandom.base64)
+    secure_hash(SecureRandom.base64)
   end
   def hash_password(salt, password)
-    hash("#{salt}-#{password}")
+    secure_hash("#{salt}-#{password}")
   end
 
-  def hash(source)
+  def secure_hash(source)
     Digest::SHA2.hexdigest source
   end
 

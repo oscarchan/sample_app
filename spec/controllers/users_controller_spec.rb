@@ -16,14 +16,6 @@ describe UsersController do
   end
 
   describe "Get 'new'" do
-    before :each do
-      @attr = {
-          name: "",
-          email: "",
-          password: "",
-          password_confirmation: ""
-      }
-    end
 
     it "should be successful" do
       get :new
@@ -34,19 +26,52 @@ describe UsersController do
       get :new
       response.should have_selector("title", content: "Ruby on Rails Tutorial Sample App | Sign up")
     end
+  end
 
-    it "should not accept an empty form" do
-      get :new
+  describe "POST 'create'" do
+    context "success" do
+      before :each do
+        @attr = {
+            name: "Test User",
+            email: "test_user@test.com",
+            password: "testpass",
+            password_confirmation: "testpass"
+        }
+      end
 
-      lambda {
+      it "should create a user" do
+        lambda {
+          post :create, :user => @attr
+        }.should change(User, :count).by(1)
+      end
+
+      it "should redirect to the user show page" do
         post :create, :user => @attr
-      }.should_not change(User, :count)
+        response.should redirect_to(user_path(assigns(:user)))
+      end
+    end
+    context "failure" do
+      before :each do
+        @attr = {
+            name: "",
+            email: "",
+            password: "",
+            password_confirmation: ""
+        }
+      end
+
+      it "should not accept an empty form" do
+        lambda {
+          post :create, :user => @attr
+        }.should_not change(User, :count)
+      end
+
+      it "should render the 'new' page" do
+        post :create, :user => @attr
+        response.should render_template('new')
+      end
     end
 
-    it "should render the 'new' page" do
-      post :create, :user => @attr
-      response.should render_template('new')
-    end
   end
 
 end
