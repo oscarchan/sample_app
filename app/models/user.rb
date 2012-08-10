@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
       length:  { in: 6..40}
 
   validates :password_confirmation,
-      presence: { :unless => lambda { self.password.nil? } } 
+      presence: { :unless => lambda { self.password.nil? } }
 
   before_save :encrypt_password
 

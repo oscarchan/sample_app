@@ -11,8 +11,12 @@
   </div>
   <div class="field">
       <%= f.label :password %> <br />
-      <%= f.password_field :password, :disable_with => "Saving ..." %>
+      <%= f.password_field :password %>
   </div>
-  <%= f.submit %>
+    <div class="field">
+        <%= f.label :password_confirmation %> <br />
+        <%= f.password_field :password_confirmation, :disable_with => "Saving ..." %>
+    </div>
+  <%= f.submit :disable_with => "Saving ..."  %>
 <% end %>
 </div>
