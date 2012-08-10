@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessor :password
+  attr_accessor :password #, :password_confirmation
 
   attr_accessible :name, :email,
                   :password, :password_confirmation
@@ -22,6 +22,9 @@ class User < ActiveRecord::Base
       presence: true,
       confirmation: true,
       length:  { in: 6..40}
+
+  validates :password_confirmation,
+      presence: { :unless => lambda { self.password.nil? } } 
 
   before_save :encrypt_password
 

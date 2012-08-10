@@ -70,6 +70,7 @@ describe User do
       user.should have_at_least(1).error_on(:password)
     end
 
+
     it "should require a password matching password_confirmation " do
       attr = @attr.merge(:password_confirmation => "")
       user = User.new(attr)

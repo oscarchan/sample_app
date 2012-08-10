@@ -39,10 +39,19 @@ describe UsersController do
         }
       end
 
-      it "should create a user" do
+      it "should create an user" do
         lambda {
           post :create, :user => @attr
         }.should change(User, :count).by(1)
+      end
+
+      it "should not create an user when password is not confirmed" do
+        @attr.delete(:password_confirmation)
+
+        lambda {
+          post :create, :user => @attr
+        }.should change(User, :count).by(0)
+
       end
 
       it "should redirect to the user show page" do
