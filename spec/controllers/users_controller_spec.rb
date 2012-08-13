@@ -50,7 +50,7 @@ describe UsersController do
 
         lambda {
           post :create, :user => @attr
-        }.should change(User, :count).by(0)
+        }.should_not change(User, :count)
 
       end
 
@@ -84,6 +84,33 @@ describe UsersController do
         post :create, :user => @attr
         response.should render_template('new')
       end
+    end
+
+  end
+
+  context "form fields" do
+    before :each do
+      get :new
+    end
+
+    subject { response }
+
+    it "should have a name field" do
+      response.should have_selector 'input#user_name'
+    end
+
+    it { should have_selector 'input#user_email' }
+
+    it { should have_selector 'input#user_password' }
+
+    it { should have_selector 'input#user_password_confirmation' }
+
+
+  end
+
+  context "incomplete form" do
+    before :each do
+      @form_parameters = {user_name: "testtest", user_email: "test@test.com", user_password: "testtest", user_password_confirmation: "testtest" }
     end
 
   end
