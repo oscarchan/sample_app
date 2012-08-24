@@ -14,7 +14,7 @@ SampleApp::Application.routes.draw do
   get '/show' => 'users#show'
 
   match 'signin' => 'sessions#new'
-  match 'singout' => 'sessions#destroy'
+  match 'signout' => 'sessions#destroy'
 
   root :to => 'pages#home'
 
