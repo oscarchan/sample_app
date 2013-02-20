@@ -37,13 +37,12 @@ gem 'jquery-rails'
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.12'
-  gem 'sqlite3'
-end
-
-group :test do
   gem 'rspec', '~> 2.12'
-  gem 'capybara'
+
+  # use capybara 1.x because of bug: https://github.com/jnicklas/capybara/issues/844
+  gem 'capybara', '~> 1.0'
   gem 'factory_girl_rails', '~> 3.4'
+  gem 'sqlite3'
 end
 
 group :production do
