@@ -23,4 +23,11 @@ describe "Pages", type: :feature do
     it { should have_selector('h1', text: 'About Us') }
     it { should have_selector('title', text: "| About") }
   end
+
+  context "Contact page" do
+    before(:each) { visit '/pages/contact' }
+    subject { page }
+
+    it { should have_selector('h1', text: 'Contact Us') }
+    it { should have_selector('title', text: "| Contact") }  end
 end
