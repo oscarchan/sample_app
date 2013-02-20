@@ -14,5 +14,6 @@
 *.log
 /tmp
 /doc
-/.idea
+/.idea/
 /.yardoc
+

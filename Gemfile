@@ -1,11 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.3'
+gem 'rails', '3.2.11'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-gem 'sqlite3'
 
 
 # Gems used only for assets and not required
@@ -17,7 +15,7 @@ group :assets do
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platform => :ruby
 
-  gem 'uglifier', '>= 1.0.3'
+  gem 'uglifier', '~> 1.2'
 end
 
 gem 'jquery-rails'
@@ -37,12 +35,17 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
-group :development do
-  gem 'rspec-rails'
+group :development, :test do
+  gem 'rspec-rails', '~> 2.12'
+  gem 'sqlite3'
 end
 
 group :test do
-  gem 'rspec'
-  gem 'webrat'
-  gem 'factory_girl_rails'
+  gem 'rspec', '~> 2.12'
+  gem 'capybara'
+  gem 'factory_girl_rails', '~> 3.4'
+end
+
+group :production do
+  gem 'pg', '0.12.2'
 end

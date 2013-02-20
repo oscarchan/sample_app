@@ -32,6 +32,8 @@ RSpec.configure do |config|
 
   config.include FactoryGirl::Syntax::Methods
 
+  config.order = "random"
+
   def test_sign_in(user)
     puts "---- methods start -----"
     puts "---- methods end -----"
