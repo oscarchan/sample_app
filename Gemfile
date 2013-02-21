@@ -43,8 +43,17 @@ group :development, :test do
   gem 'capybara', '~> 1.0'
   gem 'factory_girl_rails', '~> 3.4'
   gem 'sqlite3'
+
+  gem 'guard-rspec', '1.2.1'
+  gem 'guard-spork', '1.2.0'
+  gem 'spork', '0.9.2'
 end
+
+# Platform dependency
+gem 'rb-fsevent', '0.9.1', :require => false, :group => :test
+gem 'growl', '1.0.3', :group => :test
 
 group :production do
   gem 'pg', '0.12.2'
 end
+

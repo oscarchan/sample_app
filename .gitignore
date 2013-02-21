@@ -16,4 +16,4 @@
 /doc
 /.idea/
 /.yardoc
-
+bundler_stubs/
