@@ -1,8 +1,8 @@
 module ApplicationHelper
   BASE_TITLE = "Ruby on Rails Tutorial Sample App"
 
-  def full_title
-    return BASE_TITLE if @title.nil?
+  def full_title(title)
+    return BASE_TITLE if title.blank?
     return "#{BASE_TITLE} | #{@title}"
 
   end
