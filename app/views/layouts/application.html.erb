@@ -2,24 +2,24 @@
 <html>
 <head>
   <title>Ruby on Rails Tutorial Sample App | <%= full_title(yield(:title)) %></title>
-    <%= csrf_meta_tags %>
-    <%= stylesheet_link_tag    'blueprint/screen', :media => 'screen' %>
-    <%= stylesheet_link_tag    'blueprint/print', :media => 'print' %>
-    <!--[if lt IE 8]><%= stylesheet_link_tag 'blueprint/ie' %>><![endif]-->
+  <%= stylesheet_link_tag    'application', media: "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
 
 
-    <%= stylesheet_link_tag    'application' %>
-    <%= javascript_include_tag "application" %>
 
 </head>
-<body class="container">
+<body>
 <%= render 'layouts/header' %>
-<section class="round">
+<div class="container">
     <% flash.each do |key, value| %>
       <%= content_tag :div, value, :class => "flash #{key}" %>
     <% end %>
     <%= yield %>
-</section>
+</div>
 <%= render 'layouts/footer' %>
 <%= debug params if Rails.env.development? %>
 </body>
