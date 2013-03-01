@@ -3,7 +3,7 @@ module ApplicationHelper
 
   def full_title(title)
     return BASE_TITLE if title.blank?
-    return "#{BASE_TITLE} | #{@title}"
+    return "#{BASE_TITLE} | #{title}"
 
   end
 

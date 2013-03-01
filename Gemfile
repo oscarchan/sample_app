@@ -9,17 +9,17 @@ gem 'rails', '3.2.11'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
+  gem 'sass-rails',   '3.2.5'
   gem 'bootstrap-sass', '2.1'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'coffee-rails', '3.2.2'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platform => :ruby
 
-  gem 'uglifier', '~> 1.2'
+  gem 'uglifier', '1.2.3'
 end
 
-gem 'jquery-rails'
+gem 'jquery-rails', '2.0.2'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -37,11 +37,11 @@ gem 'jquery-rails'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 2.12'
-  gem 'rspec', '~> 2.12'
+  gem 'rspec-rails', '2.11.0'
+  #gem 'rspec', '2.6.1'
 
   # use capybara 1.x because of bug: https://github.com/jnicklas/capybara/issues/844
-  gem 'capybara', '~> 1.0'
+  gem 'capybara', '1.1.2'
   gem 'factory_girl_rails', '~> 3.4'
   gem 'sqlite3'
 
