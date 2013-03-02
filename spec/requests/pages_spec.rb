@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe "Pages", type: :feature do
+
   context "Home page" do
     before(:each) { visit home_path }
     subject { page }
@@ -31,5 +32,12 @@ describe "Pages", type: :feature do
 
     it { should have_selector('h1', text: 'Contact Us') }
     it { should have_selector('title', text: "| Contact") }
+  end
+
+  context "Sign up page" do
+    before(:each) { visit signup_path }
+    subject { page }
+    it { should have_selector('h1', text: 'Sign up')}
+    it { should have_selector('title', text: "Sign up")}
   end
 end
