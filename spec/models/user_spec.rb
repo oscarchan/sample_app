@@ -14,6 +14,12 @@ describe User do
   subject { @user }
 
   it { should be_valid }
+  it { should respond_to(:name)}
+  it { should respond_to(:email)}
+  it { should respond_to(:password)}
+  it { should respond_to(:password_confirmation)}
+  it { should respond_to(:password_digest)}
+
 
   def random_string(length)
     chars = ('a'..'z').to_a

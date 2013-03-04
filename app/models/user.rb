@@ -55,7 +55,7 @@ class User < ActiveRecord::Base
   def encrypt_password
     self.salt = make_salt if new_record?
 
-    self.encrypted_password = hash_password(salt, password)
+    self.password_digest = hash_password(salt, password)
   end
 
   def make_salt
