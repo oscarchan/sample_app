@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   validates :email,
       presence: true,
       format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
-      uniqueness: true #{ case_sensitive: true}
+      uniqueness: true # { case_sensitive: false }
 
   validates :password,
       presence: true,
@@ -41,6 +41,13 @@ class User < ActiveRecord::Base
   def self.authenticate_with_salt(id, cookie_salt)
     user = User.find_by_id(id)
     return user if user && user.salt == cookie_salt
+  end
+
+  def email=(email)
+    canonical_email = email.downcase if email.respond_to? :downcase
+    canonical_email ||= email
+
+    write_attribute(:email, canonical_email)
   end
 
   private
