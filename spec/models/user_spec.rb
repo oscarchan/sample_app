@@ -26,30 +26,31 @@ describe User do
     (1..length).map { chars[rand(chars.length)]  }.join
   end
 
-=begin
   describe "authentication" do
     before :each do
       @user.save
     end
 
     it "should return nil when no such user" do
-      user = User.authenticate("nosuch@email.com", @attr[:password])
+      user = User.authenticate("nosuch@email.com", @user.password)
       user.should be_nil
     end
 
     it "should return nil when authentication fails" do
-      user = User.authenticate(@attr[:email], "xxxxx")
+      user = User.authenticate(@user.email, "xxxxx")
       user.should be_nil
     end
 
     it "should return nil when authentication passes" do
-      user = User.authenticate(@attr[:email], @attr[:password])
+      user = User.authenticate(@user.email, @user.password)
       user.should_not be_nil
 
       @user.id.should == user.id
 
     end
   end
+
+=begin
   describe "password encryption" do
     before :each do
       @user = User.create!(@attr)

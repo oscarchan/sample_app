@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
 
 
   def has_password?(password)
-    encrypted_password ==  hash_password(salt, password)
+    password_digest ==  hash_password(salt, password)
   end
 
   def self.authenticate(email, password)
