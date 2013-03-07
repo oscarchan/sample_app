@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 
   attr_accessible :name, :email,
                   :password, :password_confirmation
+  has_secure_password
 
   validates :name,
            :presence => true,
@@ -26,7 +27,7 @@ class User < ActiveRecord::Base
   validates :password_confirmation,
       presence: { :unless => lambda { self.password.nil? } }
 
-  before_save :encrypt_password
+  before_save { |user| user.email = email.downcase }
 
 
   def has_password?(password)

@@ -50,19 +50,18 @@ describe User do
     end
   end
 
-=begin
   describe "password encryption" do
     before :each do
-      @user = User.create!(@attr)
+      @user.save
     end
 
     it "should set password encryption" do
-      @user.encrypted_password.should_not be_blank
+      @user.password_digest.should_not be_blank
     end
 
     describe "has_password? method" do
       it "should be true if the passwords match" do
-        @user.has_password?(@attr[:password]).should be_true
+        @user.has_password?(@user.password).should be_true
       end
 
       it "should be false if the passwords don't match'" do
@@ -70,46 +69,42 @@ describe User do
       end
     end
   end
+
   describe "password validations" do
-    it "should create a new instance given valid attribute" do
-      User.create!(@attr)
+    context "should create a new instance given valid attribute" do
+      it { should be_valid }
     end
 
-    it "should require a password" do
-      attr = @attr.merge(:password => "", :password_confirmation => "")
-      user = User.new(attr)
-      user.should_not be_valid
-      user.should have_at_least(1).error_on(:password)
+    context "should require a password" do
+      before(:each) { @user.password =  @user.password_confirmation = "" }
+
+      it { should_not be_valid }
+      it { should have_at_least(1).error_on(:password) }
     end
 
 
-    it "should require a password matching password_confirmation " do
-      attr = @attr.merge(:password_confirmation => "")
-      user = User.new(attr)
-      user.should_not be_valid
-      user.should have_at_least(1).error_on(:password)
+    context "should require a password matching password_confirmation " do
+      before (:each) { @user.password_confirmation = "" }
+
+      it {should_not be_valid }
+      it {should have_at_least(1).error_on(:password) }
     end
 
-    it "should reject long passwords" do
-      password = random_string(50)
-      attr = @attr.merge(:password => password, :password_confirmation => password)
-      user = User.new(attr)
-      user.should_not be_valid
-      user.should have_at_least(1).error_on(:password)
+    context "should reject long passwords" do
+      before(:each) { @user.password = @user.password_confirmation = random_string(50) }
+      it { should_not be_valid }
+      it {should have_at_least(1).error_on(:password) }
     end
 
-    it "should reject short passwords" do
-      password = random_string(5)
-      attr = @attr.merge(:password => password, :password_confirmation => password)
-      user = User.new(attr)
-      user.should_not be_valid
-      user.should have_at_least(1).error_on(:password)
+    context "should reject short passwords" do
+      before(:each) { @user.password = @user.password_confirmation = random_string(5) }
+      it { should_not be_valid }
+      it {should have_at_least(1).error_on(:password) }
     end
 
 
 
   end
-=end
 
   context "name" do
     describe "should be present" do
