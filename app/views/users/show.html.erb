@@ -1,3 +1,14 @@
+<% provide(:title, @user.name) %>
+<div class="row">
+  <aside class="span4">
+    <section>
+      <h1>
+        <%= gravatar_for  @user  %>
+        <%= @user.name %>
+      </h1>
+    </section>
+  </aside>
+</div>
 <div class="user_info round" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
     <div class="span-4 round left">
         <label>Name</label><%= @user.name %></br>

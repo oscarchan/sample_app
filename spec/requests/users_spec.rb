@@ -1,7 +1,11 @@
 require 'spec_helper'
 
-describe "Users" do
-  describe "GET /users" do
+describe "User pages" do
+  subject {page}
+
+  describe "signup" do
+    before { visit signup_path }
+
     it "should not make a new user with empty form" do
       lambda do
         visit signup_path
@@ -9,7 +13,8 @@ describe "Users" do
         fill_in "Email", :with => ""
         fill_in "Password", :with => ""
         fill_in "Password Confirmation", :with => ""
-        click_button
+        expect {click_button "Create" }.not_to change(User, :count)
+
         response.should render_template 'users/new'
         response.should have_selector 'div#error_explanation'
       end.should_not change(User, :count)

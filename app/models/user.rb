@@ -1,17 +1,17 @@
 class User < ActiveRecord::Base
-  attr_accessor :password #, :password_confirmation
+  #attr_accessor :password, :password_confirmation   # auto defined by has_secure_password
 
   attr_accessible :name, :email,
                   :password, :password_confirmation
   has_secure_password
 
   validates :name,
-           :presence => true,
-      :length => { :minimum => 6, :maximum => 32}
+            :presence => true,
+            :length => { :minimum => 6, :maximum => 32}
 
   validates :name,
-      presence: true,
-      length: { maximum: 32 }
+            presence: true,
+            length: { maximum: 32 }
 
 
   validates :email,
@@ -26,9 +26,6 @@ class User < ActiveRecord::Base
 
   validates :password_confirmation,
       presence: { :unless => lambda { self.password.nil? } }
-
-  before_save { |user| user.email = email.downcase }
-
 
   def has_password?(password)
     password_digest ==  hash_password(salt, password)
