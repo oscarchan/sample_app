@@ -2,13 +2,6 @@ require 'spec_helper'
 
 describe "User Pages" do
 
-  describe "profile page" do
-    let(:user) { @user = FactoryGirl.create(:user) }
-    before { visit user_path(user) }
-
-    it { should have_selector('h1', text: user.name) }
-    it { should have_selector("title", text: user.name) }
-  end
 
   describe "POST 'create'" do
     context "success" do
