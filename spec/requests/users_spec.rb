@@ -15,8 +15,22 @@ describe "User pages" do
   describe "signup" do
     before { visit signup_path }
 
-    it "should not make a new user when form is empty" do
-      expect {click_button "Create" }.not_to change(User, :count)
+    context "when form is empty" do
+      it "should not make a new user" do
+        expect { click_button "Create" }.not_to change(User, :count)
+      end
+
+      context "it should generate errors" do
+        before (:each) { click_button "Create" }
+        it { should have_selector('div#error_explanation h2', text: 'error')}
+        it { should have_selector('div.field_with_errors input#user_password') }
+        it { should have_selector('div.field_with_errors input#user_email') }
+        it { should have_selector('div.field_with_errors input#user_password') }
+        it { should have_selector('div.field_with_errors input#user_password_confirmation') }
+
+
+      end
+
     end
 
     it "should make a new user" do
