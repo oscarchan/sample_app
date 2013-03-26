@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "User pages" do
+describe "As for User's" do
   subject {page}
 
   describe "profile page" do
@@ -12,7 +12,7 @@ describe "User pages" do
     it { should have_selector("title", text: user.name) }
   end
 
-  describe "signup" do
+  describe "signup page" do
     before { visit signup_path }
 
     context "when form is empty" do
@@ -20,25 +20,35 @@ describe "User pages" do
         expect { click_button "Create" }.not_to change(User, :count)
       end
 
-      context "it should generate errors" do
+      context "and submitted" do
         before (:each) { click_button "Create" }
         it { should have_selector('div#error_explanation h2', text: 'error')}
         it { should have_selector('div.field_with_errors input#user_password') }
         it { should have_selector('div.field_with_errors input#user_email') }
         it { should have_selector('div.field_with_errors input#user_password') }
         it { should have_selector('div.field_with_errors input#user_password_confirmation') }
-
-
       end
-
     end
 
-    it "should make a new user" do
+    context "with valid information" do
+      before (:each) {
         fill_in "user_name", with: "testtest"
         fill_in "user_email", with: "test@test.com"
         fill_in "user_password", with: "testtest"
         fill_in "user_password_confirmation", with: "testtest"
+      }
+
+      it "should make a new user" do
         expect { click_button "Create"}.to change(User, :count).by(1)
+      end
+
+      context "after saving the user" do
+        before (:each) { click_button "Create"}
+
+        it { should have_selector('title', text: "testtest") }
+        it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+
+      end
     end
   end
 
