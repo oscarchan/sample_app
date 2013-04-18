@@ -2,7 +2,9 @@ class User < ActiveRecord::Base
   #attr_accessor :password, :password_confirmation   # auto defined by has_secure_password
 
   attr_accessible :name, :email,
-                  :password, :password_confirmation
+                  :password, :password_confirmation,
+                  :remember_token
+
   has_secure_password
 
   validates :name,
@@ -27,18 +29,12 @@ class User < ActiveRecord::Base
   validates :password_confirmation,
       presence: { :unless => lambda { self.password.nil? } }
 
-  def has_password?(password)
-    password_digest ==  hash_password(salt, password)
-  end
+  before_save lambda { |user| user.remember_token = SecureRandom.urlsafe_base64}
+
 
   def self.authenticate(email, password)
     user = User.find_by_email(email)
-    return user if user && user.has_password?(password)
-  end
-
-  def self.authenticate_with_salt(id, cookie_salt)
-    user = User.find_by_id(id)
-    return user if user && user.salt == cookie_salt
+    return user.try(:authenticate, password) if user
   end
 
   def email=(email)
@@ -48,24 +44,6 @@ class User < ActiveRecord::Base
     write_attribute(:email, canonical_email)
   end
 
-  private
-
-  def encrypt_password
-    self.salt = make_salt if new_record?
-
-    self.password_digest = hash_password(salt, password)
-  end
-
-  def make_salt
-    secure_hash(SecureRandom.base64)
-  end
-  def hash_password(salt, password)
-    secure_hash("#{salt}-#{password}")
-  end
-
-  def secure_hash(source)
-    Digest::SHA2.hexdigest source
-  end
 
 
 end

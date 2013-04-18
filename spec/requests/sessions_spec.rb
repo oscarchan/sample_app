@@ -1,17 +1,50 @@
 require 'spec_helper'
 
-describe SessionsController do
-  render_views
+describe "In session's" do
 
-  describe "GET 'new'" do
-    before(:each) { get 'new' }
-    subject { response }
+  subject { page }
 
-    it { should be_success }
+  describe "signin page" do
+    before(:each) { visit signin_path }
 
-    it { should have_selector("title", :content => "Sign in")}
+    it { should have_selector('h1', text: "Sign in") }
+    it { should have_selector("title", :text => "Sign in")}
+
+    context "with invalid login" do
+      before (:each) { click_button "Sign in" }
+
+      it { should have_selector('h1', text: "Sign in") }
+      it { should have_selector("div.alert.alert-error", text: "Invalid email/password")}
+
+      context "after visiting another page " do
+        before { click_link "Home" }
+        it { should_not have_selector("div.alert.alert-error")}
+      end
+    end
+
+    context "with valid login" do
+      let(:user) { FactoryGirl.create(:user) }
+
+      before (:each) {
+        fill_in 'email', with: user.email
+        fill_in 'password', with: user.password
+        click_button "Sign in"
+      }
+
+      it { should have_selector('title', text: user.name) }
+      it { should have_link('Profile', href: user_path(user))}
+      it { should have_link('Sign out', href: signout_path)}
+      it { should_not have_link('Sign in', href: signin_path)}
+
+      context "after signed out" do
+        before { click_link "Sign out"}
+
+        it { should have_link('Sign in')}
+      end
+    end
   end
 
+=begin
   describe "POST 'create'" do
     before :each do
       attr = FactoryGirl.attributes_for(:user)
@@ -63,4 +96,5 @@ describe SessionsController do
     end
 
   end
+=end
 end

@@ -5,8 +5,7 @@ describe "As for User's" do
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
-    before { visit user_path(user)
-    }
+    before { visit user_path(user)}
 
     it { should have_selector('h1', text: user.name) }
     it { should have_selector("title", text: user.name) }
@@ -31,7 +30,7 @@ describe "As for User's" do
     end
 
     context "with valid information" do
-      before (:each) {
+      before {
         fill_in "user_name", with: "testtest"
         fill_in "user_email", with: "test@test.com"
         fill_in "user_password", with: "testtest"
@@ -47,6 +46,7 @@ describe "As for User's" do
 
         it { should have_selector('title', text: "testtest") }
         it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+        it { should have_link('Sign out')}
 
       end
     end
@@ -59,23 +59,31 @@ describe "As for User's" do
         visit signin_path
         fill_in :email, :with => ""
         fill_in :password, :with => ""
-        click_button
-        response.should have_selector("div.flash.error")
+        click_button "Sign in"
+
+        page.should have_selector("div.alert.alert-error")
 
       end
     end
 
-    context "when suceeded" do
-      it "should sign a user in and out" do
-        user = FactoryGirl.create(:user)
-        visit signin_path
-        fill_in :email, :with => user.email
-        fill_in :password, :with => user.password
-        click_button
-        controller.should be_signed_in
-        click_link "Sign out"
-        controller.should_not be_signed_in
-      end
+    context "when succeeded" do
+        let(:user)  { FactoryGirl.create(:user) }
+
+        before do
+          visit signin_path
+          valid_signin(user)
+        end
+
+        it {
+          all('title')
+          should have_selector('title', text: user.name)
+        }
+
+#        it { should have_link('Users',    href: users_path) }
+        it { should have_link('Profile',  href: user_path(user)) }
+        it { should have_link('Settings', href: edit_user_path(user)) }
+        it { should have_link('Sign out', href: signout_path) }
+        it { should_not have_link('Sign in', href: signin_path) }
     end
   end
 end

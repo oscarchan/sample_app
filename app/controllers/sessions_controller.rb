@@ -1,16 +1,14 @@
 class SessionsController < ApplicationController
   #before_filter :new ladmbda { |ctlr| @title = "Sign in"}
   def new
-    @title = "Sign in"
   end
 
   def create
-    user = User.authenticate(params[:session][:email], params[:session][:password])
+    user = User.authenticate(params[:email], params[:password])
 
     if user.nil?
       # sign in failure
       flash.now[:error] = "Invalid email/password combination."
-      @title = "Sign in"
       render :new
     else
       sign_in user

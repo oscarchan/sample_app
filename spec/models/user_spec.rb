@@ -19,6 +19,8 @@ describe User do
   it { should respond_to(:password)}
   it { should respond_to(:password_confirmation)}
   it { should respond_to(:password_digest)}
+  it { should respond_to(:authenticate)}
+  it { should respond_to(:remember_token)}
 
 
   def random_string(length)
@@ -27,47 +29,29 @@ describe User do
   end
 
   describe "authentication" do
-    before :each do
-      @user.save
+    before { @user.save }
+
+    context "with valid password" do
+      it { should == User.authenticate(@user.email, @user.password) }
     end
 
-    it "should return nil when no such user" do
-      user = User.authenticate("nosuch@email.com", @user.password)
-      user.should be_nil
+    context "with invalid password" do
+       it { User.authenticate(@user.email, "xxxxx").should be_false }
     end
 
-    it "should return nil when authentication fails" do
-      user = User.authenticate(@user.email, "xxxxx")
-      user.should be_nil
-    end
-
-    it "should return nil when authentication passes" do
-      user = User.authenticate(@user.email, @user.password)
-      user.should_not be_nil
-
-      @user.id.should == user.id
-
+    context "with invalid email" do
+      it { User.authenticate("xxxxx", @user.password).should be_false }
     end
   end
 
+  describe "remember token" do
+    before { @user.save }
+    its(:remember_token) { should_not be_blank}
+  end
   describe "password encryption" do
-    before :each do
-      @user.save
-    end
+    before { @user.save }
 
-    it "should set password encryption" do
-      @user.password_digest.should_not be_blank
-    end
-
-    describe "has_password? method" do
-      it "should be true if the passwords match" do
-        @user.has_password?(@user.password).should be_true
-      end
-
-      it "should be false if the passwords don't match'" do
-        @user.has_password?("xxxxx").should be_false
-      end
-    end
+    its(:password_digest) { should_not be_blank }
   end
 
   describe "password validations" do

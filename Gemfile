@@ -38,6 +38,8 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 group :development, :test do
   gem 'rspec-rails', '2.11.0'
+  gem 'cucumber-rails', '1.2.1', require: false
+  gem 'database_cleaner', '0.7.0'
   #gem 'rspec', '2.6.1'
 
   # use capybara 1.x because of bug: https://github.com/jnicklas/capybara/issues/844

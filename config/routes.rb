@@ -11,11 +11,11 @@ SampleApp::Application.routes.draw do
   get '/about' => 'pages#about'
   get '/help' => 'pages#help'
 
-  get '/signup' => 'users#new'
+  match '/signup' => 'users#new'
   get '/show' => 'users#show'
 
   match 'signin' => 'sessions#new'
-  match 'signout' => 'sessions#destroy'
+  match 'signout' => 'sessions#destroy', via: :delete
 
   root :to => 'pages#home'
 
