@@ -10,3 +10,4 @@ Feature: Signing in
     When he submits valid signin information
     Then he should see his profile page
     And he should see a signout link
+
