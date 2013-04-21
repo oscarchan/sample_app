@@ -71,19 +71,37 @@ describe "As for User's" do
 
         before do
           visit signin_path
-          valid_signin(user)
+          sign_in(user)
         end
 
-        it {
-          all('title')
-          should have_selector('title', text: user.name)
-        }
+        it { should have_selector('title', text: user.name) }
 
 #        it { should have_link('Users',    href: users_path) }
         it { should have_link('Profile',  href: user_path(user)) }
         it { should have_link('Settings', href: edit_user_path(user)) }
         it { should have_link('Sign out', href: signout_path) }
         it { should_not have_link('Sign in', href: signin_path) }
+    end
+  end
+
+  describe "edit" do
+    let(:user) { FactoryGirl.create(:user) }
+
+    describe "page" do
+      before {
+        sign_in(user)
+        visit edit_user_path(user)
+      }
+
+      it { should have_selector('h1',    text: "Update your profile") }
+      it { should have_selector('title', text: "Edit user") }
+      it { should have_link('change', href: 'http://gravatar.com/emails') }
+
+      describe "with invalid information" do
+        before { click_button "Save changes" }
+
+        it { should have_content('error') }
+      end
     end
   end
 end

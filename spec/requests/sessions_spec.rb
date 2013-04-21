@@ -25,14 +25,11 @@ describe "In session's" do
     context "with valid login" do
       let(:user) { FactoryGirl.create(:user) }
 
-      before (:each) {
-        fill_in 'email', with: user.email
-        fill_in 'password', with: user.password
-        click_button "Sign in"
-      }
+      before { sign_in(user) }
 
       it { should have_selector('title', text: user.name) }
       it { should have_link('Profile', href: user_path(user))}
+      it { should have_link('Settings', href: edit_user_path(user))}
       it { should have_link('Sign out', href: signout_path)}
       it { should_not have_link('Sign in', href: signin_path)}
 

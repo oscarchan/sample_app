@@ -169,3 +169,7 @@ input, textarea, select, .uneditable-input {
     @extend .error;
   }
 }
+
+.field_with_errors {
+  color: #f00;
+}

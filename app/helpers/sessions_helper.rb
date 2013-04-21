@@ -20,4 +20,8 @@ module SessionsHelper
     current_user
   end
 
+  def authenticate
+    redirect_to new_session_path unless signed_in?
+  end
+
 end
