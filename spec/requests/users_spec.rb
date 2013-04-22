@@ -3,6 +3,33 @@ require 'spec_helper'
 describe "As for User's" do
   subject {page}
 
+  describe 'index page' do
+    context 'when user is not authenticated' do
+      before { visit users_path }
+      it { should have_selector('title', text: 'Sign in')}
+    end
+
+    context  do
+      let(:user) { FactoryGirl.create(:user)}
+      let(:user1) { FactoryGirl.create(:user)}
+      let(:user1) { FactoryGirl.create(:user)}
+
+      before {
+        sign_in(user)
+        visit users_path
+      }
+
+      it { should have_selector('title', text:'All users') }
+      it { should have_selector('h1', text: 'All users')}
+
+      it "should list each other" do
+        User.all.each do |user|
+          page.should have_selector('li', text: user.name)
+        end
+      end
+    end
+  end
+
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
     before { visit user_path(user)}
