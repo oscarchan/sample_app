@@ -9,10 +9,8 @@ describe "As for User's" do
       it { should have_selector('title', text: 'Sign in')}
     end
 
-    context  do
+    context 'after authenticated' do
       let(:user) { FactoryGirl.create(:user)}
-      let(:user1) { FactoryGirl.create(:user)}
-      let(:user1) { FactoryGirl.create(:user)}
 
       before {
         sign_in(user)
@@ -22,12 +20,21 @@ describe "As for User's" do
       it { should have_selector('title', text:'All users') }
       it { should have_selector('h1', text: 'All users')}
 
-      it "should list each other" do
-        User.all.each do |user|
-          page.should have_selector('li', text: user.name)
+      context "when pagination" do
+        before (:all) { 30.times {FactoryGirl.create(:user)}}
+        after (:all) {User.delete_all}
+
+        it "should list each user in a page" do
+          User.paginate(page: 1).each do |user|
+            page.should have_selector('li', text: user.name)
+          end
         end
+
       end
     end
+
+
+
   end
 
   describe "profile page" do
