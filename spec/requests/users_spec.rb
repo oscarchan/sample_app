@@ -29,12 +29,24 @@ describe "As for User's" do
             page.should have_selector('li', text: user.name)
           end
         end
-
       end
+
+      context "when current user is an admin" do
+        let(:admin) { FactoryGirl.create(:admin)}
+        before {
+          sign_in(admin)
+          visit users_path
+        }
+
+        it { should have_link('delete', href: user_path(user)) }
+        it "should be able to delete another user" do
+          expect { click_link('delete')}.to change(User, :count).by(-1)
+        end
+
+        it {should_not have_link('delete', href: user_path(admin))}
+      end
+
     end
-
-
-
   end
 
   describe "profile page" do

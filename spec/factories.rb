@@ -6,5 +6,9 @@ FactoryGirl.define do
     f.sequence(:name) { |n| "Test Rob #{n}" }
     password "welcome"
     password_confirmation "welcome"
+
+    factory :admin do |f|
+      admin true
+    end
   end
 end
