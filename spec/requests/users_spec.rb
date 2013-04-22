@@ -86,6 +86,7 @@ describe "As for User's" do
 
   describe "edit" do
     let(:user) { FactoryGirl.create(:user) }
+    let(:wrong_user) { FactoryGirl.create(:user)}
 
     describe "page" do
       before {
@@ -103,5 +104,46 @@ describe "As for User's" do
         it { should have_content('error') }
       end
     end
+
+    describe "when not authenticated" do
+      before { visit edit_user_path(user)}
+
+      it { should have_selector('title', text: "Sign in") }
+    end
+
+    describe "when authenticated with a different user" do
+      before {
+        sign_in(user)
+        visit edit_user_path(wrong_user)
+      }
+
+      # NOTE: capybara does not work with redirect_to
+      # specify { response.should redirect_to(root_path) }
+      it { should have_selector('h1', text: 'Welcome') }
+
+    end
+  end
+
+  describe "update" do
+    let(:user) { FactoryGirl.create(:user)}
+    let(:wrong_user) { FactoryGirl.create(:user)}
+
+    describe "directly submitting to update action" do
+      before { put user_path(user)}
+
+      # NOTE: redirect_to works here when we are not using capybara
+      specify { response.should redirect_to(signin_path)}
+    end
+
+    describe "directly submitting to update action to a wrong user" do
+      before {
+        sign_in(user)
+        put user_path(wrong_user)
+      }
+
+      specify { response.should redirect_to(root_path) }
+    end
+
+
   end
 end
