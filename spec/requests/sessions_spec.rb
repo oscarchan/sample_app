@@ -9,6 +9,9 @@ describe "In session's" do
 
     it { should have_selector('h1', text: "Sign in") }
     it { should have_selector("title", :text => "Sign in")}
+    it { should_not have_link('Profile')}
+    it { should_not have_link('Settings')}
+
 
     context "with invalid login" do
       before (:each) { click_button "Sign in" }

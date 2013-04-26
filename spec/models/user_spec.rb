@@ -21,7 +21,19 @@ describe User do
   it { should respond_to(:password_digest)}
   it { should respond_to(:authenticate)}
   it { should respond_to(:remember_token)}
+  it { should respond_to(:admin)}
 
+  it "should not allow mass assignment on admin field" do
+    expect {
+      User.new(
+          name: "Oz Cha",
+          email: "oz@cha.com",
+          password: "foobar",
+          password_confirmation: "foobar",
+          admin: true
+      )
+    }.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  end
 
   def random_string(length)
     chars = ('a'..'z').to_a
