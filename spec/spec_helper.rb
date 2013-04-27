@@ -48,6 +48,7 @@ Spork.prefork do
 
     # backward compatibility - include Capybara in :request type
     config.include Capybara::DSL, :type => :request
+
   end
 
 end

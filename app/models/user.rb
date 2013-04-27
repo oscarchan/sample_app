@@ -1,11 +1,14 @@
 class User < ActiveRecord::Base
   #attr_accessor :password, :password_confirmation   # auto defined by has_secure_password
 
+
   attr_accessible :name, :email,
                   :password, :password_confirmation,
                   :remember_token
 
   has_secure_password
+
+  has_many :microposts
 
   validates :name,
             :presence => true,
