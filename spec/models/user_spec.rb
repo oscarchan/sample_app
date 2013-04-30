@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe User do
 
-  let(:user) do
+  subject(:user) do
     User.new(
         name: "Oz Cha",
         email: "oz@cha.com",
@@ -10,8 +10,6 @@ describe User do
         password_confirmation: "foobar"
     )
   end
-
-  subject { user }
 
   it { should be_valid }
   it { should respond_to(:name)}

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Micropost do
   let(:user) { FactoryGirl.create(:user)}
 
-  subject { user.microposts.build(content: "Lorem ipsum") }
+  subject(:micropost) { user.microposts.build(content: "Lorem ipsum") }
 
   it { should respond_to(:content)}
   it { should respond_to(:user)}
@@ -18,12 +18,22 @@ describe Micropost do
     end
   end
 
-  describe "" do
+  describe "should not allow long content" do
+    before { micropost.content = random_string(150) }
 
-
-
+    it { should_not be_valid }
   end
 
+  describe "should not allow blank content" do
+    before { micropost.content = ""}
 
+    it { should_not be_valid }
+  end
+
+  describe "should not allow invalid user id" do
+    before { micropost.user_id = nil}
+
+    it { should_not be_valid }
+  end
 
 end
