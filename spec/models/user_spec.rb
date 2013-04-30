@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe User do
 
-  before :each do
-    @user = User.new(
+  let(:user) do
+    User.new(
         name: "Oz Cha",
         email: "oz@cha.com",
         password: "foobar",
@@ -11,7 +11,7 @@ describe User do
     )
   end
 
-  subject { @user }
+  subject { user }
 
   it { should be_valid }
   it { should respond_to(:name)}
@@ -36,33 +36,30 @@ describe User do
     }.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
   end
 
-  def random_string(length)
-    chars = ('a'..'z').to_a
-    (1..length).map { chars[rand(chars.length)]  }.join
-  end
+
 
   describe "authentication" do
-    before { @user.save }
+    before { user.save }
 
     context "with valid password" do
-      it { should == User.authenticate(@user.email, @user.password) }
+      it { should == User.authenticate(user.email, user.password) }
     end
 
     context "with invalid password" do
-       it { User.authenticate(@user.email, "xxxxx").should be_false }
+       it { User.authenticate(user.email, "xxxxx").should be_false }
     end
 
     context "with invalid email" do
-      it { User.authenticate("xxxxx", @user.password).should be_false }
+      it { User.authenticate("xxxxx", user.password).should be_false }
     end
   end
 
   describe "remember token" do
-    before { @user.save }
+    before { user.save }
     its(:remember_token) { should_not be_blank}
   end
   describe "password encryption" do
-    before { @user.save }
+    before { user.save }
 
     its(:password_digest) { should_not be_blank }
   end
@@ -73,7 +70,7 @@ describe User do
     end
 
     context "should require a password" do
-      before(:each) { @user.password =  @user.password_confirmation = "" }
+      before { user.password =  user.password_confirmation = "" }
 
       it { should_not be_valid }
       it { should have_at_least(1).error_on(:password) }
@@ -81,20 +78,20 @@ describe User do
 
 
     context "should require a password matching password_confirmation " do
-      before (:each) { @user.password_confirmation = "" }
+      before (:each) { user.password_confirmation = "" }
 
       it {should_not be_valid }
       it {should have_at_least(1).error_on(:password) }
     end
 
     context "should reject long passwords" do
-      before(:each) { @user.password = @user.password_confirmation = random_string(50) }
+      before { user.password = user.password_confirmation = random_string(50) }
       it { should_not be_valid }
       it {should have_at_least(1).error_on(:password) }
     end
 
     context "should reject short passwords" do
-      before(:each) { @user.password = @user.password_confirmation = random_string(5) }
+      before { user.password = user.password_confirmation = random_string(5) }
       it { should_not be_valid }
       it {should have_at_least(1).error_on(:password) }
     end
@@ -105,7 +102,7 @@ describe User do
 
   context "name" do
     describe "should be present" do
-      before(:each) { @user.name = "" }
+      before { user.name = "" }
 
       it { should_not be_valid }
       its(:errors)  { should_not be_nil }
@@ -113,7 +110,7 @@ describe User do
     end
 
     describe "should be of certain size" do
-      before(:each) { @user.name = random_string(64) }
+      before { user.name = random_string(64) }
 
       it { should_not be_valid }
       its(:errors) { should_not be_nil }
@@ -123,7 +120,7 @@ describe User do
 
   context "email" do
     describe "should be present" do
-      before(:each) { @user.email = nil }
+      before { user.email = nil }
 
       it { should_not be_valid }
       it { should have_at_least(1).error_on(:email) }
@@ -131,22 +128,22 @@ describe User do
 
     it "should be in valid email format" do
       %w[user@foo.com THE_USER@foo.bar.org first.last@foo.jp].each do |email|
-        @user.email = email
-        @user.should be_valid
+        user.email = email
+        user.should be_valid
       end
     end
 
     it "should reject invalid email format" do
       %w[user@foo,com user_at_foo.org example.user@foo.].each do |email|
-        @user.email = email
-        @user.should_not be_valid
-        @user.should have(1).error_on(:email)
+        user.email = email
+        user.should_not be_valid
+        user.should have(1).error_on(:email)
       end
     end
 
     describe "should reject duplicate emails" do
-      before(:each) {
-        dup = @user.dup
+      before {
+        dup = user.dup
         dup.email = dup.email.upcase
         dup.save
       }
@@ -155,5 +152,28 @@ describe User do
       it { should have_at_least(1).error_on(:email) }
     end
 
+  end
+
+  context "microposts" do
+    before do
+      FactoryGirl.create(:micropost, user: user, created_at: 1.hour.ago)
+      FactoryGirl.create(:micropost, user: user, created_at: 2.hours.ago)
+      FactoryGirl.create(:micropost, user: user, created_at: 3.hours.ago)
+
+      user.save
+    end
+
+    it "should have microposts in the right order" do
+      user.microposts.each_cons(2) { |first, second| first.created_at.should > second.created_at}
+    end
+
+    it "should destroy associated microposts" do
+      microposts = user.microposts.dup
+      user.destroy
+
+      microposts.each do |micropost|
+        Micropost.find_by_id(micropost.id).should be_nil
+      end
+    end
   end
 end

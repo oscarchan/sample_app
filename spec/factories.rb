@@ -1,5 +1,3 @@
-
-
 FactoryGirl.define do
   factory :user do |f|
     f.sequence(:email) { |n| "testuser#{n}@test.com" }
@@ -10,5 +8,11 @@ FactoryGirl.define do
     factory :admin do |f|
       admin true
     end
+
+  end
+
+  factory :micropost do
+    content Faker::Lorem.paragraph
+    user
   end
 end
