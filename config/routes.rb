@@ -1,5 +1,8 @@
 SampleApp::Application.routes.draw do
 
+
+  get "microposts/destroy"
+
   get "users/show"
   get "pages/home"
   get "pages/contact"
@@ -19,6 +22,7 @@ SampleApp::Application.routes.draw do
 
   root :to => 'pages#home'
 
+  resource :microposts, only: [:create, :destroy]
   resources :sessions, only: [ :new, :create, :destroy ]
   resources :users
 

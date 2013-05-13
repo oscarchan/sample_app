@@ -8,13 +8,14 @@
       </h1>
     </section>
   </aside>
-</div>
-<div class="user_info round" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
-    <div class="span-4 round left">
-        <label>Name</label><%= @user.name %></br>
-    </div>
-    <div id="" class="span-4 round right">
-        <label>Name</label><%= @user.name %></br>
-        <label>Email</label><%= @user.email %></br>
-    </div>
+  <div class="span8">
+  <% if @user.microposts.any? %>
+    <h3>Microposts (<%= @user.microposts.count %>)</h3>
+    <ol class="microposts">
+      <%= render @microposts %>
+    </ol>
+    <%= will_paginate @microposts %>
+  </div>
+  <% end %>
+  </div>
 </div>

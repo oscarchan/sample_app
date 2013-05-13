@@ -1,0 +1,8 @@
+<%= form_for micropost do |f| %>
+  <%= render 'layouts/error_messages' %>
+  <div class="field">
+    <%= f.label :content %>
+    <%= f.text_field :content %>
+  </div>
+  <%= f.submit "Post", class: "btn btn-large btn-primary", disable_with: "Posting ..." %>
+<% end %>

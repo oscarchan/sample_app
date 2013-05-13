@@ -6,6 +6,8 @@ RSpec::Matchers.define :have_error_message do |message|
   end
 end
 
+
+
 def sign_in(user)
   visit signin_path
 
